@@ -42,34 +42,27 @@ function createGeoJson(responseJson) {
             })
         }
     };
-    //display the results section 
-    // console.log(geoJsonMain);
+    
     addPoints(geoJsonMain, responseJson);
-    // return currentParks;
-    // var bounds = new L.LatLngBounds(currentParks);
-    // console.log(bounds);
-    // map.fitBounds(bounds);
-    // addPoints(currentParks);
-    // $('#results').removeClass('hidden');
 
 };
 
 function addPoints(geoJsonMain, responseJson) {
     console.log(geoJsonMain);
+    
+    let pointData = L.geoJSON(geoJsonMain);
     for (let j = 0; j < responseJson.data.length; j++) {
         for (let i = 0; i < geoJsonMain.features.length; i++) {
-            // console.log(geoJsonMain.features[i].properties.stateCode);
-            if (geoJsonMain.features[i].properties.stateCode === responseJson.data[j].states) {
-                // map.clearLayers()
+            console.log('main ' + geoJsonMain.features[i].properties.stateCode);
+            if (geoJsonMain.features[i].properties.stateCode != responseJson.data[j].states) {
+                // pointData.clearLayers();
                 console.log(geoJsonMain.features[i].properties.stateCode, ' ', responseJson.data[j].states)
+            } else {
+                pointData.addTo(map);
+                map.fitBounds(pointData.getBounds());
             }
         }
     }
-    L.geoJSON(geoJsonMain).addTo(map);
-    // marker.remove();
-    // for (let i = 0; i < currentParks.length; i++) {
-    //     currentParks[i].addTo(map);
-    // }
 
 }
 
