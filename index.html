@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>State Park Finder</title>
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+        crossorigin="" />
+</head>
+
+<body>
+    <header>
+        <h3>What state would you like to explore?</h3>
+        <form id="js-form">
+            <input type="text" name="search-term" id="js-search-term" required>
+            <input type="submit" value="Go!">
+        </form>
+    </header>
+    <main>
+        <div id='map'></div>
+        <section id='landing'>
+            <!-- <h1>
+                Hello and welcome to the "State" Park Finder! Here, you can 
+                select any state in the United States and view the parks, monuments,
+                and historical designations as dictated by The National Park
+                Service.
+            </h1> -->
+        </section>
+    </main>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"
+        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+        integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+        crossorigin=""></script>
+    <script src="main.js"></script>
+</body>
+
+</html>
