@@ -66,13 +66,9 @@ function addPoints(geoJsonMain) {
     }
     oldPoints = pointData;
 
-    pointData.on("click", function (event) {
-        console.log(event.layer.feature.properties.fullName);
-        $('#info-section').html(`
-        <h4><a href="${event.layer.feature.properties.url}" target="_blank">${event.layer.feature.properties.fullName}</a></h4>
-            <p>${event.layer.feature.properties.description}</p>
-            <img src="${createImageString(event.layer.feature.properties.fullName)}" alt="">
-        `)
+  pointData.on("click", function (event) {
+      console.log(event.layer.feature.properties);        
+      getUnsplashData(event.layer.feature.properties.fullName, event)  
     });
 }
 
@@ -99,11 +95,9 @@ function getNPSdata(query) {
         });
 }
 
-function createImageString(imageString) {
-    return getUnsplashData(imageString);
-}
 
-function getUnsplashData(query) {
+
+function getUnsplashData(query, event) {
     const params = {
         client_id: unSplashKey,
         query: query
@@ -121,7 +115,11 @@ function getUnsplashData(query) {
             throw new Error(response.statusText);
         })
         .then(responseJson => {
-            return (responseJson.results[0].urls.thumb)
+            $('#info-section').html(`
+        <h4><a href="${event.layer.feature.properties.url}" target="_blank">${event.layer.feature.properties.fullName}</a></h4>
+            <p>${event.layer.feature.properties.description}</p>
+            <img src="${responseJson.results[0].urls.thumb}" alt="park image">
+        `)
             // console.log(responseJson.results[0].urls.thumb);
         } )
         .catch(err => {
