@@ -1,8 +1,9 @@
 // 'use strict';
 
-// put your own value below!
 const apiKey = 'vf2dp08Nq3girvWkdZlVigvB8Vp5drhtGkRNZuO8';
 const searchURL = 'https://developer.nps.gov/api/v1/parks';
+const unSplashKey = '8utzXnHZVfh1iu-66JHxa7V6i9Z6pDofKYDeeAcCEFU'
+const unSplashURL = 'https://api.unsplash.com/search/photos'
 
 
 function formatQueryParams(params) {
@@ -28,7 +29,10 @@ function createGeoJson(responseJson) {
         // console.log('long ' + responseJson.data[i].latLong.match(/([^:]*)$/)[1]);
         if (responseJson.data[i].latLong === '') {
             continue
-        } else {
+        } else if (responseJson.data[i].states.includes(',')) {
+            continue
+        }
+        else {
             geoJsonMain.features.push({
                 "type": "Feature",
                 "geometry": {
@@ -37,35 +41,40 @@ function createGeoJson(responseJson) {
                 },
                 "properties": {
                     "stateCode": responseJson.data[i].states,
-                    "description": responseJson.data[i].description
+                    "description": responseJson.data[i].description,
+                    "fullName": responseJson.data[i].fullName,
+                    "url": responseJson.data[i].url,
+                    "weather": responseJson.data[i].weather
                 }
             })
         }
     };
     
-    addPoints(geoJsonMain, responseJson);
+    addPoints(geoJsonMain);
 
 };
 
-function addPoints(geoJsonMain, responseJson) {
-    console.log(geoJsonMain);
-    
+let oldPoints = false;
+
+function addPoints(geoJsonMain) {
     let pointData = L.geoJSON(geoJsonMain);
-    for (let j = 0; j < responseJson.data.length; j++) {
-        for (let i = 0; i < geoJsonMain.features.length; i++) {
-            console.log('main ' + geoJsonMain.features[i].properties.stateCode);
-            if (geoJsonMain.features[i].properties.stateCode != responseJson.data[j].states) {
-                // pointData.clearLayers();
-                console.log(geoJsonMain.features[i].properties.stateCode, ' ', responseJson.data[j].states)
-            } else {
-                pointData.addTo(map);
-                map.fitBounds(pointData.getBounds());
-            }
-        }
+    pointData.addTo(map);
+    map.fitBounds(pointData.getBounds());
+
+    if(oldPoints){
+      oldPoints.removeFrom(map);
     }
+    oldPoints = pointData;
 
+    pointData.on("click", function (event) {
+        console.log(event.layer.feature.properties.fullName);
+        $('#info-section').html(`
+        <h4><a href="${event.layer.feature.properties.url}" target="_blank">${event.layer.feature.properties.fullName}</a></h4>
+            <p>${event.layer.feature.properties.description}</p>
+            <img src="${createImageString(event.layer.feature.properties.fullName)}" alt="">
+        `)
+    });
 }
-
 
 function getNPSdata(query) {
     const params = {
@@ -85,6 +94,36 @@ function getNPSdata(query) {
             throw new Error(response.statusText);
         })
         .then(responseJson => createGeoJson(responseJson))
+        .catch(err => {
+            $('#js-error-message').text(`Something went wrong: ${err.message}`);
+        });
+}
+
+function createImageString(imageString) {
+    return getUnsplashData(imageString);
+}
+
+function getUnsplashData(query) {
+    const params = {
+        client_id: unSplashKey,
+        query: query
+    };
+    const queryString = formatQueryParams(params)
+    const url = unSplashURL + '?' + queryString;
+
+    console.log(url);
+
+    fetch(url)
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error(response.statusText);
+        })
+        .then(responseJson => {
+            return (responseJson.results[0].urls.thumb)
+            // console.log(responseJson.results[0].urls.thumb);
+        } )
         .catch(err => {
             $('#js-error-message').text(`Something went wrong: ${err.message}`);
         });

@@ -1,5 +1,7 @@
-* {
+body * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
   }
   
   body {
@@ -21,9 +23,18 @@
     z-index: 9000;
   }
   
-  #landing h1 {
-      font-size: 18px;
+  #header-banner {
+      font-size: 12px;
       text-align: center;
+      background-color: lightgray;
+  }
+
+  #info-section {
+    max-width: 600px;
+    text-align: left;
+    position: absolute;
+    z-index: 9000;
+    bottom: 0;
   }
   
   .hidden {
