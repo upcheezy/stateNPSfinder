@@ -2,7 +2,7 @@
 
 const apiKey = 'vf2dp08Nq3girvWkdZlVigvB8Vp5drhtGkRNZuO8';
 const searchURL = 'https://developer.nps.gov/api/v1/parks';
-const unSplashKey = 'key located on submission page'
+const unSplashKey = 'api key'
 const unSplashURL = 'https://maps.googleapis.com/maps/api/place/findplacefromtext/json'
 const proxyurl = "https://cors-anywhere.herokuapp.com/"
 const photourl = 'https://maps.googleapis.com/maps/api/place/photo'
@@ -60,7 +60,7 @@ let oldPoints = false;
 function addPoints(geoJsonMain) {
     let pointData = L.geoJSON(geoJsonMain);
     pointData.addTo(map);
-    map.fitBounds(pointData.getBounds());
+    map.fitBounds(pointData.getBounds(), {padding: [100,100]});
 
     if (oldPoints) {
         oldPoints.removeFrom(map);
@@ -339,12 +339,10 @@ var options = {
 
 var map = L.map('map', options);
 // Get basemap URL from Leaflet Providers
-var basemap_url = 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'
+var basemap_url = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}'
 // Get basemap attributes from Leaflet Providers
 var basemap_attributes = {
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-    subdomains: 'abcd',
-    maxZoom: 19
+    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
 };
 // requests some map tiles
 var tiles = L.tileLayer(basemap_url, basemap_attributes);
