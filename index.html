@@ -18,15 +18,16 @@
         </div>
         <h3>What state would you like to explore?</h3>
         <form id="js-form">
-            <input type="text" name="search-term" id="js-search-term" placeholder="south carolina or sc" required>
+            <input type="text" name="search-term" id="js-search-term" placeholder="state name or abbrev." required>
             <input type="submit" value="Go!">
         </form>
     </header>
     <main>
         <div id='map'></div>
-        <section id='info-section'>
-        </section>
+        <section class='info-section'></section>
+        <i class="fas fa-arrow-up"></i>
     </main>
+    <script src="https://kit.fontawesome.com/c79911a95b.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.js"
         integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"

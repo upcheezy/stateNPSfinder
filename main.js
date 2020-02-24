@@ -2,7 +2,7 @@
 
 const apiKey = 'vf2dp08Nq3girvWkdZlVigvB8Vp5drhtGkRNZuO8';
 const searchURL = 'https://developer.nps.gov/api/v1/parks';
-const unSplashKey = 'api key'
+const unSplashKey = 'AIzaSyCQO7mooYBV_h0MafwxwfwjonjAzymM5Ws'
 const unSplashURL = 'https://maps.googleapis.com/maps/api/place/findplacefromtext/json'
 const proxyurl = "https://cors-anywhere.herokuapp.com/"
 const photourl = 'https://maps.googleapis.com/maps/api/place/photo'
@@ -125,6 +125,13 @@ function getGooglePhotoRef(query, event) {
         });
 }
 
+function toggleClass() {
+    $('.fa-arrow-up').on('click', function(event) {
+        // alert('arrow clicked');
+        $('.info-section').toggleClass('hidden');
+    })
+}
+
 function getGooglePhoto(photo, event) {
     const params = {
         key: unSplashKey,
@@ -136,7 +143,7 @@ function getGooglePhoto(photo, event) {
 
     console.log(url);
 
-    $('#info-section').html(`
+    $('.info-section').html(`
     <h4><a href="${event.layer.feature.properties.url}" target="_blank">${event.layer.feature.properties.fullName}</a></h4>
         <p>${event.layer.feature.properties.description}</p>
         <img src="${url}" alt="park image">
@@ -324,7 +331,8 @@ function watchForm() {
     });
 }
 
-$(watchForm);
+$(watchForm());
+$(toggleClass());
 
 
 /////////////////////leaflet//////////////////////
