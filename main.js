@@ -2,7 +2,7 @@
 
 const apiKey = 'vf2dp08Nq3girvWkdZlVigvB8Vp5drhtGkRNZuO8';
 const searchURL = 'https://developer.nps.gov/api/v1/parks';
-const unSplashKey = 'AIzaSyC7Dt4zdmTSt_9k82ahWAZDNQywPDGGeaE'
+const unSplashKey = 'key located on submission page'
 const unSplashURL = 'https://maps.googleapis.com/maps/api/place/findplacefromtext/json'
 const proxyurl = "https://cors-anywhere.herokuapp.com/"
 const photourl = 'https://maps.googleapis.com/maps/api/place/photo'
