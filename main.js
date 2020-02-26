@@ -26,9 +26,8 @@ function createGeoJson(responseJson) {
         "features": []
     }
 
+    // build GeoJSON
     for (let i = 0; i < responseJson.data.length; i++) {
-        // console.log(responseJson.data[i]);
-        // console.log('long ' + responseJson.data[i].latLong.match(/([^:]*)$/)[1]);
         if (responseJson.data[i].latLong === '') {
             continue
         } else if (responseJson.data[i].states.includes(',')) {
@@ -58,6 +57,7 @@ function createGeoJson(responseJson) {
 
 let oldPoints = false;
 
+// add the point to the map
 function addPoints(geoJsonMain) {
     let pointData = L.geoJSON(geoJsonMain);
     pointData.addTo(map);
@@ -75,6 +75,7 @@ function addPoints(geoJsonMain) {
     });
 }
 
+// NPS API call 
 function getNPSdata(query) {
     const params = {
         api_key: apiKey,
@@ -98,6 +99,7 @@ function getNPSdata(query) {
         });
 }
 
+// get the google photo reference 
 function getGooglePhotoRef(query, event) {
     const params = {
         key: unSplashKey,
@@ -134,6 +136,7 @@ function toggleClass() {
     })
 }
 
+// get the google photo from the reference 
 function getGooglePhoto(photo, event) {
     const params = {
         key: unSplashKey,
@@ -157,29 +160,10 @@ function getGooglePhoto(photo, event) {
         <p class='weather-title'>${event.layer.feature.properties.weather}</p>
     </div>
     `)
-
-    // fetch(proxyurl + url)
-    //     .then(response => {
-    //         if (response.ok) {
-    //             return response.json();
-    //         }
-    //         throw new Error(response.statusText);
-    //     })
-    //     .then(responseJson => {
-    //         $('#info-section').html(`
-    //     <h4><a href="${event.layer.feature.properties.url}" target="_blank">${event.layer.feature.properties.fullName}</a></h4>
-    //         <p>${event.layer.feature.properties.description}</p>
-    //         <img src="${responseJson.url}" alt="park image">
-    //     `)
-    //         // console.log(responseJson.results[0].urls.thumb);
-    //     } )
-    //     .catch(err => {
-    //         $('#js-error-message').text(`Something went wrong: ${err.message}`);
-    //     });
 }
 
 
-
+// watch for user to submit and account for different spellings 
 function watchForm() {
     $('form').submit(event => {
         event.preventDefault();
