@@ -198,10 +198,9 @@ header img {
 @media screen and (min-width: 1000px) {
   .info-section {
     width: 23%;
-    height: 100%;
+    height: calc(100vh - 125px);
     align-items: center;
-    overflow: auto;
-    padding-top: 130px;
+    overflow-y: auto;
   }
 
   header {
