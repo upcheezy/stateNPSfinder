@@ -9,22 +9,31 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
         integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
         crossorigin="" />
+    <link href="https://fonts.googleapis.com/css?family=Amatic+SC:700|Josefin+Sans&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <header>
-        <div id='header-banner'>
-            <h1>National Park Service Explorer</h1>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/1/1d/US-NationalParkService-Logo.svg" alt="NPS logo"
+            id='left-image' height="100">
+        <div id='header-content'>
+            <div id='header-banner'>
+                <h1>National Park Service Explorer</h1>
+            </div>
+            <h3>What state would you like to explore?</h3>
+            <form id="js-form">
+                <input type="text" name="search-term" id="js-search-term" placeholder="state name or abbreviation"
+                    required>
+                <input type="submit" value="Go!">
+            </form>
         </div>
-        <h3>What state would you like to explore?</h3>
-        <form id="js-form">
-            <input type="text" name="search-term" id="js-search-term" placeholder="state name or abbrev." required>
-            <input type="submit" value="Go!">
-        </form>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/1/1d/US-NationalParkService-Logo.svg" alt="NPS logo"
+            id='right-image' height="100">
     </header>
     <main>
         <div id='map'></div>
-        <section class='info-section'></section>
+        <button id="locate-position"><i class="fas fa-location-arrow"></i></button>
+        <section class='info-section hidden'></section>
         <i class="fas fa-arrow-up"></i>
     </main>
     <script src="https://kit.fontawesome.com/c79911a95b.js" crossorigin="anonymous"></script>
@@ -33,6 +42,7 @@
     <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
         integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
         crossorigin=""></script>
+    <script src="config.js"></script>
     <script src="main.js"></script>
 </body>
 

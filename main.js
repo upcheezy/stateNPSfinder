@@ -1,8 +1,8 @@
 // 'use strict';
 
-const apiKey = 'vf2dp08Nq3girvWkdZlVigvB8Vp5drhtGkRNZuO8';
+const apiKey = config.apiKey;
 const searchURL = 'https://developer.nps.gov/api/v1/parks';
-const unSplashKey = 'api key'
+const unSplashKey = config.unSplashKey
 const unSplashURL = 'https://maps.googleapis.com/maps/api/place/findplacefromtext/json'
 const proxyurl = "https://cors-anywhere.herokuapp.com/"
 const photourl = 'https://maps.googleapis.com/maps/api/place/photo'
@@ -45,7 +45,8 @@ function createGeoJson(responseJson) {
                     "description": responseJson.data[i].description,
                     "fullName": responseJson.data[i].fullName,
                     "url": responseJson.data[i].url,
-                    "weather": responseJson.data[i].weather
+                    "weather": responseJson.data[i].weatherInfo,
+                    "directions": responseJson.data[i].directionsInfo
                 }
             })
         }
@@ -70,6 +71,7 @@ function addPoints(geoJsonMain) {
     pointData.on("click", function (event) {
         console.log(event.layer.feature.properties);
         getGooglePhotoRef(event.layer.feature.properties.fullName, event)
+        $('.info-section').removeClass('hidden');
     });
 }
 
@@ -144,9 +146,16 @@ function getGooglePhoto(photo, event) {
     console.log(url);
 
     $('.info-section').html(`
-    <h4><a href="${event.layer.feature.properties.url}" target="_blank">${event.layer.feature.properties.fullName}</a></h4>
+    <div id='place-title'><h4><a href="${event.layer.feature.properties.url}" target="_blank">${event.layer.feature.properties.fullName}</a></h4></div>
+    <div id='place-content'>
+    <img src="${url}" alt="park image">
+        <h5 class='directions-title title'>Description</h5>
         <p>${event.layer.feature.properties.description}</p>
-        <img src="${url}" alt="park image">
+        <h5 class='directions-title title'>Directions</h5>
+        <p class='directions-title'>${event.layer.feature.properties.directions}</p>
+        <h5 class='weather-title title'>Weather Information</h5>
+        <p class='weather-title'>${event.layer.feature.properties.weather}</p>
+    </div>
     `)
 
     // fetch(proxyurl + url)
@@ -339,8 +348,8 @@ $(toggleClass());
 /////////////////////////////////////////////////
 
 var options = {
-    center: [33.83333333, -80.86666667],
-    zoom: 7,
+    center: [37.317752, -100.261230],
+    zoom: 4,
     zoomSnap: .1,
     zoomControl: false
 };
@@ -355,3 +364,7 @@ var basemap_attributes = {
 // requests some map tiles
 var tiles = L.tileLayer(basemap_url, basemap_attributes);
 map.addLayer(tiles);
+
+$('#locate-position').on('click', function(){
+    map.locate({setView: true, maxZoom: 6});
+  });

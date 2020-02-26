@@ -1,65 +1,247 @@
 body * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-  
-  body {
-    font-family: 'Roboto', sans-serif;
-  }
-  
-  button, input[type="text"] {
-    padding: 5px;
-  }
-  
-  button:hover {
-    cursor: pointer;
-  }
-  
-  header {
-    max-width: 600px;
-    text-align: center;
-    position: absolute;
-    z-index: 9000;
-  }
-  
-  #header-banner {
-      font-size: 12px;
-      text-align: center;
-      background-color: lightgray;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Montserrat';
+}
+
+button,
+input[type="text"] {
+  padding: 5px;
+}
+
+input[type=submit] {
+  background-color: #254b1e;
+  border: none;
+  color: white;
+  padding: 8px 15px 8px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  font-family: 'Montserrat';
+  border-radius: 5px;
+}
+
+.directions-title {
+  display: none;
+}
+
+.weather-title {
+  display: none;
+}
+
+input[type=text] {
+  width: 60%;
+  border: none;
+  border-bottom: 2px solid #254b1e;
+  background-color: #c76a3f;
+  text-align: left;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+header {
+  /* max-width: 600px; */
+  text-align: center;
+  position: absolute;
+  z-index: 9000;
+  background-color: #c76a3f;
+  /* display: block; */
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 10px;
+  font-family: 'Amatic SC';
+  color: white;
+  /* font-weight: bold; */
+}
+
+header h3 {
+  font-size: 25px;
+  padding-bottom: 7px;
+}
+
+main {
+  font-family: 'Josefin Sans';
+}
+
+#header-banner {
+  font-size: 18px;
+  text-align: center;
+  font-weight: bold;
+  text-decoration: underline;
+  /* letter-spacing: 5px; */
+}
+
+.info-section {
+  /* max-width: 600px; */
+  text-align: left;
+  position: absolute;
+  z-index: 9000;
+  bottom: 0;
+  height: 30%;
+  background-color: #c76a3f;
+  left: 0;
+  padding-top: 5px;
+  line-height: 20px;
+  color: white;
+}
+
+#place-title a {
+  color: #254b1e;
+}
+
+#place-title {
+  display: block;
+  font-size: 25px;
+  text-align: center;
+  letter-spacing: 3px;
+  margin-top: 5px;
+  line-height: 30px;
+}
+
+#place-content {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  background-color: #c76a3f;
+}
+
+#place-content p {
+  padding-top: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+#place-content img {
+  width: auto;
+  max-width: 350px;
+  height: auto;
+  max-height: 200px;
+  margin: auto;
+}
+
+.hidden {
+  display: none;
+}
+
+#map {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.fa-arrow-up {
+  position: absolute;
+  bottom: 70px;
+  color: black;
+  font-size: 30px;
+  z-index: 9000;
+  text-align: center;
+  width: 100%;
+  left: 0;
+}
+
+.fa-location-arrow {
+  position:absolute;
+  top: 150px;
+  right:20px;
+  text-shadow: 3px 3px white;
+  color: black;
+  z-index: 9000;
+  font-size: 25px;
+  padding: 5px
+}
+
+header img {
+  display: none;
+}
+
+@media screen and (min-width: 600px) {
+  input[type=text] {
+    width: 60%;
   }
 
-  .info-section {
-    /* max-width: 600px; */
-    text-align: left;
-    position: absolute;
-    z-index: 9000;
-    bottom: 0;
-    height: 30%;
-    background-color: white;
-    left: 0;
+  #place-content {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  header {
     display: flex;
+    justify-content: center;
+
+  }
+
+   header img {
+    display: initial;
+  }
+
+  #right-image {
+    margin-left: 50px;
+  }
+
+  #left-image {
+    margin-right: 50px;
   }
   
-  .hidden {
+}
+
+@media screen and (min-width: 1000px) {
+  .info-section {
+    width: 23%;
+    height: 85.5%;
+    align-items: center;
+    overflow: scroll;
+    padding-top: 130px;
+  }
+
+  header {
+    border-bottom: black 5px solid;
+  }
+
+  #place-content {
+    display:flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+  }
+
+  .title {
+    padding-top: 15px;
+    font-size: 20px;
+  }
+
+  #place-title {
+    border: black 5px solid;
+    padding: 10px;
+  }
+
+  #place-content img {
+    margin-top: 20px;
+    max-width: 450px;
+    max-height: 250px;
+  }
+
+  .directions-title {
+    display: initial;
+  }
+
+  .fa-arrow-up {
     display: none;
   }
-
-  #map {
-    width: 100%;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
+  
+  .weather-title {
+    display: initial;
   }
-
-  .fas {
-    position: absolute;
-    bottom: 70px;
-    color: black;
-    font-size: 30px;
-    z-index: 9000;
-    text-align: center;
-    width: 100%;
-    left: 0;
-  }
+}
