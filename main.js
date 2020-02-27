@@ -85,7 +85,7 @@ function getNPSdata(query) {
     const url = searchURL + '?' + queryString;
 
     console.log(url);
-
+    
     fetch(url)
         .then(response => {
             if (response.ok) {

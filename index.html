@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
         integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
         crossorigin="" />
-    <link href="https://fonts.googleapis.com/css?family=Amatic+SC:700|Josefin+Sans&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Amatic+SC:700%7CJosefin+Sans&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -22,19 +22,21 @@
             </div>
             <h3>What state would you like to explore?</h3>
             <form id="js-form">
-                <input type="text" name="search-term" id="js-search-term" placeholder="state name or abbreviation"
-                    required>
-                <input type="submit" value="Go!">
+                <label for=js-search-term>
+                    <input type="text" name="search-term" id="js-search-term" placeholder="state name or abbreviation" required>
+                    <input type="submit" value="Go!">
+                </label>
             </form>
         </div>
         <img src="https://upload.wikimedia.org/wikipedia/commons/1/1d/US-NationalParkService-Logo.svg" alt="NPS logo"
             id='right-image' height="100">
     </header>
     <main>
+        <div id="spinner"></div> 
         <div id='map'></div>
-        <button id="locate-position"><i class="fas fa-location-arrow"></i></button>
+        <button id="locate-position" aria-label="locate position"><i class="fas fa-location-arrow" aria-hidden="false"></i></button>
         <section class='info-section hidden'></section>
-        <i class="fas fa-arrow-up"></i>
+        <i class="fas fa-arrow-up" aria-hidden="false"></i>
     </main>
     <script src="https://kit.fontawesome.com/c79911a95b.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.js"
