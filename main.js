@@ -71,8 +71,7 @@ function addPoints(geoJsonMain) {
     oldPoints = pointData;
 
     pointData.on("click", function (event) {
-        console.log(event.layer.feature.properties);
-        getGooglePhotoRef(event.layer.feature.properties.fullName, event)
+        getGooglePhotoRef(event.layer.feature.properties.fullName, event);
         $('.info-section').removeClass('hidden');
         $('.fa-arrow-down').removeClass('hidden');
         // $('.fa-arrow-up').removeClass('hidden');
