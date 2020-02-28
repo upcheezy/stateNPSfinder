@@ -61,7 +61,9 @@ let oldPoints = false;
 function addPoints(geoJsonMain) {
     let pointData = L.geoJSON(geoJsonMain);
     pointData.addTo(map);
-    map.fitBounds(pointData.getBounds(), {padding: [100,100]});
+    map.fitBounds(pointData.getBounds(), {
+        padding: [100, 100]
+    });
 
     if (oldPoints) {
         oldPoints.removeFrom(map);
@@ -72,6 +74,8 @@ function addPoints(geoJsonMain) {
         console.log(event.layer.feature.properties);
         getGooglePhotoRef(event.layer.feature.properties.fullName, event)
         $('.info-section').removeClass('hidden');
+        $('.fa-arrow-down').removeClass('hidden');
+        // $('.fa-arrow-up').removeClass('hidden');
     });
 }
 
@@ -85,7 +89,7 @@ function getNPSdata(query) {
     const url = searchURL + '?' + queryString;
 
     console.log(url);
-    
+    showSpinner();
     fetch(url)
         .then(response => {
             if (response.ok) {
@@ -93,7 +97,10 @@ function getNPSdata(query) {
             }
             throw new Error(response.statusText);
         })
-        .then(responseJson => createGeoJson(responseJson))
+        .then(responseJson => {
+            hideSpinner()
+            createGeoJson(responseJson)
+        })
         .catch(err => {
             $('#js-error-message').text(`Something went wrong: ${err.message}`);
         });
@@ -110,8 +117,23 @@ function getGooglePhotoRef(query, event) {
     const queryString = formatQueryParams(params)
     const url = unSplashURL + '?' + queryString;
 
-    console.log(url);
+    // $.ajax({
+    //     url: 'http://twitter.com/status/user_timeline/padraicb.json?count=10',
+    //     dataType: 'jsonp',
+    //     success: function(dataWeGotViaJsonp){
+    //         var text = '';
+    //         var len = dataWeGotViaJsonp.length;
+    //         for(var i=0;i<len;i++){
+    //             twitterEntry = dataWeGotViaJsonp[i];
+    //             text += '<p><img src = "' + twitterEntry.user.profile_image_url_https +'"/>' + twitterEntry['text'] + '</p>'
+    //         }
+    //         $('#twitterFeed').html(text);
+    //     }
+    // });
 
+
+    console.log(url);
+    showSpinner();
     fetch(proxyurl + url)
         .then(response => {
             if (response.ok) {
@@ -120,8 +142,7 @@ function getGooglePhotoRef(query, event) {
             throw new Error(response.statusText);
         })
         .then(responseJson => {
-            console.log('inside');
-            console.log(responseJson.candidates[0].photos[0].photo_reference);
+            hideSpinner()
             getGooglePhoto(responseJson.candidates[0].photos[0].photo_reference, event);
         })
         .catch(err => {
@@ -130,9 +151,10 @@ function getGooglePhotoRef(query, event) {
 }
 
 function toggleClass() {
-    $('.fa-arrow-up').on('click', function(event) {
-        // alert('arrow clicked');
+    $('.fa-arrow-down').on('click', function (event) {
         $('.info-section').toggleClass('hidden');
+        $(this).toggleClass('fa-arrow-down fa-arrow-up')
+        // console.log($(this))
     })
 }
 
@@ -151,7 +173,9 @@ function getGooglePhoto(photo, event) {
     $('.info-section').html(`
     <div id='place-title'><h4><a href="${event.layer.feature.properties.url}" target="_blank">${event.layer.feature.properties.fullName}</a></h4></div>
     <div id='place-content'>
-    <img src="${url}" alt="park image">
+        <img src="${url}" alt="park image">
+        <br>
+        <br>
         <h5 class='directions-title title'>Description</h5>
         <p>${event.layer.feature.properties.description}</p>
         <h5 class='directions-title title'>Directions</h5>
@@ -162,170 +186,231 @@ function getGooglePhoto(photo, event) {
     `)
 }
 
+function showSpinner() {
+    $('#spinner').css('visibility', 'visible');
+}
+
+function hideSpinner() {
+    $('#spinner').css('visibility', 'hidden');
+}
+
+function initialWatch() {
+    
+}
 
 // watch for user to submit and account for different spellings 
 function watchForm() {
     $('form').submit(event => {
         event.preventDefault();
-        if ($('#js-search-term').val().toLowerCase() === 'south carolina') {
+        $('.badValue').remove();
+        if ($('#js-search-term').val().toLowerCase() === 'south carolina' || $('#js-search-term').val().toLowerCase() === 'sc') {
             const searchTerm = 'SC';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'alabama') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'alabama' || $('#js-search-term').val().toLowerCase() === 'al') {
             const searchTerm = 'AL';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'alaska') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'alaska' || $('#js-search-term').val().toLowerCase() === 'ak') {
             const searchTerm = 'AK';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'arizona') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'arizona' || $('#js-search-term').val().toLowerCase() === 'az') {
             const searchTerm = 'AZ';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'arkansas') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'arkansas' || $('#js-search-term').val().toLowerCase() === 'ar') {
             const searchTerm = 'AR';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'california') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'california' || $('#js-search-term').val().toLowerCase() === 'ca') {
             const searchTerm = 'CA';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'colorado') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'colorado' || $('#js-search-term').val().toLowerCase() === 'co') {
             const searchTerm = 'CO';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'connecticut') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'connecticut' || $('#js-search-term').val().toLowerCase() === 'ct') {
             const searchTerm = 'AZ';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'delaware') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'delaware' || $('#js-search-term').val().toLowerCase() === 'de') {
             const searchTerm = 'DE';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'florida') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'florida' || $('#js-search-term').val().toLowerCase() === 'fl') {
             const searchTerm = 'FL';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'georgia') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'georgia' || $('#js-search-term').val().toLowerCase() === 'ga') {
             const searchTerm = 'ga';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'hawaii') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'hawaii' || $('#js-search-term').val().toLowerCase() === 'hi') {
             const searchTerm = 'hi';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'idaho') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'idaho' || $('#js-search-term').val().toLowerCase() === 'id') {
             const searchTerm = 'id';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'illinois') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'illinois' || $('#js-search-term').val().toLowerCase() === 'il') {
             const searchTerm = 'il';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'indiana') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'indiana' || $('#js-search-term').val().toLowerCase() === 'in') {
             const searchTerm = 'in';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'iowa') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'iowa' || $('#js-search-term').val().toLowerCase() === 'ia') {
             const searchTerm = 'ia';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'kansas') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'kansas' || $('#js-search-term').val().toLowerCase() === 'ks') {
             const searchTerm = 'ks';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'kentucky') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'kentucky' || $('#js-search-term').val().toLowerCase() === 'ky') {
             const searchTerm = 'ky';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'louisiana') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'louisiana' || $('#js-search-term').val().toLowerCase() === 'la') {
             const searchTerm = 'la';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'maine') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'maine' || $('#js-search-term').val().toLowerCase() === 'me') {
             const searchTerm = 'me';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'maryland') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'maryland' || $('#js-search-term').val().toLowerCase() === 'md') {
             const searchTerm = 'md';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'massachusetts') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'massachusetts' || $('#js-search-term').val().toLowerCase() === 'ma') {
             const searchTerm = 'ma';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'michigan') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'michigan' || $('#js-search-term').val().toLowerCase() === 'mi') {
             const searchTerm = 'mi';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'minnesota') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'minnesota' || $('#js-search-term').val().toLowerCase() === 'mn') {
             const searchTerm = 'mn';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'mississippi') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'mississippi' || $('#js-search-term').val().toLowerCase() === 'ms') {
             const searchTerm = 'ms';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'missouri') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'missouri' || $('#js-search-term').val().toLowerCase() === 'mo') {
             const searchTerm = 'mo';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'montana') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'montana' || $('#js-search-term').val().toLowerCase() === 'mt') {
             const searchTerm = 'mt';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'nebraska') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'nebraska' || $('#js-search-term').val().toLowerCase() === 'ne') {
             const searchTerm = 'ne';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'nevada') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'nevada' || $('#js-search-term').val().toLowerCase() === 'nv') {
             const searchTerm = 'nv';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'new hampshire') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'new hampshire' || $('#js-search-term').val().toLowerCase() === 'nh') {
             const searchTerm = 'nh';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'new jersey') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'new jersey' || $('#js-search-term').val().toLowerCase() === 'nj') {
             const searchTerm = 'nj';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'new mexico') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'new mexico' || $('#js-search-term').val().toLowerCase() === 'nm') {
             const searchTerm = 'nm';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'new york') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'new york' || $('#js-search-term').val().toLowerCase() === 'ny') {
             const searchTerm = 'ny';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'north carolina') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'north carolina' || $('#js-search-term').val().toLowerCase() === 'nc') {
             const searchTerm = 'nc';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'north dakota') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'north dakota' || $('#js-search-term').val().toLowerCase() === 'nd') {
             const searchTerm = 'nd';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'ohio') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'ohio' || $('#js-search-term').val().toLowerCase() === 'oh') {
             const searchTerm = 'oh';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'oklahoma') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'oklahoma' || $('#js-search-term').val().toLowerCase() === 'ok') {
             const searchTerm = 'ok';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'oregon') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'oregon' || $('#js-search-term').val().toLowerCase() === 'or') {
             const searchTerm = 'or';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'pennsylvania') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'pennsylvania' || $('#js-search-term').val().toLowerCase() === 'pa') {
             const searchTerm = 'pa';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'rhode island') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'rhode island' || $('#js-search-term').val().toLowerCase() === 'ri') {
             const searchTerm = 'ri';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'south dakota') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'south dakota' || $('#js-search-term').val().toLowerCase() === 'sd') {
             const searchTerm = 'sd';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'tennessee') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'tennessee' || $('#js-search-term').val().toLowerCase() === 'tn') {
             const searchTerm = 'tn';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'texas') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'texas' || $('#js-search-term').val().toLowerCase() === 'tx') {
             const searchTerm = 'tx';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'utah') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'utah' || $('#js-search-term').val().toLowerCase() === 'ut') {
             const searchTerm = 'ut';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'vermont') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'vermont' || $('#js-search-term').val().toLowerCase() === 'vt') {
             const searchTerm = 'vt';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'virginia') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'virginia' || $('#js-search-term').val().toLowerCase() === 'va') {
             const searchTerm = 'va';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'washington') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'washington' || $('#js-search-term').val().toLowerCase() === 'wa') {
             const searchTerm = 'wa';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'west virginia') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'west virginia' || $('#js-search-term').val().toLowerCase() === 'wv') {
             const searchTerm = 'wv';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'wisconsin') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'wisconsin' || $('#js-search-term').val().toLowerCase() === 'wi') {
             const searchTerm = 'wi';
             getNPSdata(searchTerm);
-        } else if ($('#js-search-term').val().toLowerCase() === 'wyoming') {
+            $('.badValue').remove();
+        } else if ($('#js-search-term').val().toLowerCase() === 'wyoming' || $('#js-search-term').val().toLowerCase() === 'wy') {
             const searchTerm = 'wy';
             getNPSdata(searchTerm);
+            $('.badValue').remove();
         } else {
-            const searchTerm = $('#js-search-term').val();
-            getNPSdata(searchTerm);
+            $('#header-content').append(`<p class='badValue'>sorry, that is not a state</p>`);
         }
     });
 }
 
-$(watchForm());
-$(toggleClass());
+$(watchForm);
+$(toggleClass);
 
 
 /////////////////////leaflet//////////////////////
@@ -349,6 +434,9 @@ var basemap_attributes = {
 var tiles = L.tileLayer(basemap_url, basemap_attributes);
 map.addLayer(tiles);
 
-$('#locate-position').on('click', function(){
-    map.locate({setView: true, maxZoom: 6});
-  });
+$('#locate-position').on('click', function () {
+    map.locate({
+        setView: true,
+        maxZoom: 6
+    });
+});

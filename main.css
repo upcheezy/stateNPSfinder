@@ -6,11 +6,44 @@ body * {
 
 body {
   font-family: 'Montserrat';
+  overflow: hidden;
 }
 
 button,
 input[type="text"] {
   padding: 5px;
+}
+
+#spinner{
+  visibility: hidden;
+  width: 80px;
+  height: 80px;
+
+  border: 2px solid #f3f3f3;
+  border-top:3px solid #f25a41;
+  border-radius: 100%;
+
+  position: absolute;
+  top:0;
+  bottom:0;
+  left:0;
+  right: 0;
+  margin: auto;
+  z-index: 9000;
+
+  animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+  from {
+      transform: rotate(0deg);
+  } to {
+      transform: rotate(360deg);
+  }
+}
+
+#spinner.show {
+  visibility: visible;
 }
 
 input[type=submit] {
@@ -91,6 +124,7 @@ main {
   padding-top: 5px;
   line-height: 20px;
   color: white;
+  overflow-y: auto;
 }
 
 #place-title a {
@@ -129,6 +163,8 @@ main {
 
 .hidden {
   display: none;
+  font-size: 0;
+  visibility: hidden;
 }
 
 #map {
@@ -141,13 +177,26 @@ main {
 
 .fa-arrow-up {
   position: absolute;
-  bottom: 70px;
+  bottom: 10%;
   color: black;
   font-size: 30px;
   z-index: 9000;
   text-align: center;
   width: 100%;
   left: 0;
+  text-shadow: 2px 2px white;
+}
+
+.fa-arrow-down {
+  position: absolute;
+  bottom: 30%;
+  color: black;
+  font-size: 30px;
+  z-index: 9000;
+  text-align: center;
+  width: 100%;
+  left: 0;
+  text-shadow: 2px 2px white;
 }
 
 .fa-location-arrow {
@@ -200,7 +249,6 @@ header img {
     width: 23%;
     height: calc(100vh - 125px);
     align-items: center;
-    overflow-y: auto;
   }
 
   header {
@@ -243,5 +291,11 @@ header img {
   
   .weather-title {
     display: initial;
+  }
+
+  .hidden-large {
+    display: none;
+    font-size: 0;
+    visibility: hidden;
   }
 }
