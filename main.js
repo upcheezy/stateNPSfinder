@@ -14,6 +14,7 @@ function formatQueryParams(params) {
     return queryItems.join('&');
 }
 
+// build geojson from nps api call 
 function createGeoJson(responseJson) {
     const geoJsonMain = {
         "type": "FeatureCollection",
@@ -84,10 +85,9 @@ function getNPSdata(query) {
         api_key: apiKey,
         stateCode: query
     };
-    const queryString = formatQueryParams(params)
+    const queryString = formatQueryParams(params);
     const url = searchURL + '?' + queryString;
 
-    console.log(url);
     showSpinner();
     fetch(url)
         .then(response => {
@@ -113,25 +113,9 @@ function getGooglePhotoRef(query, event) {
         inputtype: 'textquery',
         fields: 'photos'
     };
-    const queryString = formatQueryParams(params)
+    const queryString = formatQueryParams(params);
     const url = unSplashURL + '?' + queryString;
 
-    // $.ajax({
-    //     url: 'http://twitter.com/status/user_timeline/padraicb.json?count=10',
-    //     dataType: 'jsonp',
-    //     success: function(dataWeGotViaJsonp){
-    //         var text = '';
-    //         var len = dataWeGotViaJsonp.length;
-    //         for(var i=0;i<len;i++){
-    //             twitterEntry = dataWeGotViaJsonp[i];
-    //             text += '<p><img src = "' + twitterEntry.user.profile_image_url_https +'"/>' + twitterEntry['text'] + '</p>'
-    //         }
-    //         $('#twitterFeed').html(text);
-    //     }
-    // });
-
-
-    console.log(url);
     showSpinner();
     fetch(proxyurl + url)
         .then(response => {
@@ -153,7 +137,6 @@ function toggleClass() {
     $('.fa-arrow-down').on('click', function (event) {
         $('.info-section').toggleClass('hidden');
         $(this).toggleClass('fa-arrow-down fa-arrow-up')
-        // console.log($(this))
     })
 }
 
@@ -166,8 +149,6 @@ function getGooglePhoto(photo, event) {
     };
     const queryString = formatQueryParams(params)
     const url = photourl + '?' + queryString;
-
-    console.log(url);
 
     $('.info-section').html(`
     <div id='place-title'><h4><a href="${event.layer.feature.properties.url}" target="_blank">${event.layer.feature.properties.fullName}</a></h4></div>
@@ -415,22 +396,22 @@ $(toggleClass);
 /////////////////////leaflet//////////////////////
 /////////////////////////////////////////////////
 
-var options = {
+const options = {
     center: [37.317752, -100.261230],
     zoom: 4,
     zoomSnap: .1,
     zoomControl: false
 };
 
-var map = L.map('map', options);
+const map = L.map('map', options);
 // Get basemap URL from Leaflet Providers
-var basemap_url = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}'
+const basemap_url = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}'
 // Get basemap attributes from Leaflet Providers
-var basemap_attributes = {
+const basemap_attributes = {
     attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
 };
 // requests some map tiles
-var tiles = L.tileLayer(basemap_url, basemap_attributes);
+const tiles = L.tileLayer(basemap_url, basemap_attributes);
 map.addLayer(tiles);
 
 $('#locate-position').on('click', function () {
